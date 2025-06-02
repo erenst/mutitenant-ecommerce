@@ -1,4 +1,5 @@
 import configPromise from "@payload-config";
+
 import { getPayload } from "payload";
 
 export const GET = async () => {
@@ -8,7 +9,13 @@ export const GET = async () => {
 
   const data = await payload.find({
     collection: "categories",
+    depth: 0,
+    where: {
+      parent: {
+        exists: false,
+      },
+    },
   });
-
-  return Response.json(data);
+  console.log(data);
+  return Response.json("");
 };
