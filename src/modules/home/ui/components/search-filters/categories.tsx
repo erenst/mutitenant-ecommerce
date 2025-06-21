@@ -1,7 +1,9 @@
 "use client";
 
-import { ListFilterIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "next/navigation";
+
+import { ListFilterIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -16,6 +18,8 @@ interface Props {
 }
 
 export const Categories = ({ data }: Props) => {
+  const params = useParams();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLDivElement>(null);
   const viewAllRef = useRef<HTMLDivElement>(null);
@@ -24,7 +28,9 @@ export const Categories = ({ data }: Props) => {
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const activeCategory = "all";
+  const categoryParam = params.category as string | undefined;
+  const activeCategory = categoryParam || "all";
+
   const activeCategoryIndex = data.findIndex((c) => c.slug === activeCategory);
   const isActiveCategoryHidden =
     activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;
@@ -97,6 +103,7 @@ export const Categories = ({ data }: Props) => {
 
         <div ref={viewAllRef} className="shrink-0">
           <Button
+            variant="elevated"
             className={cn(
               "h-11 px-4 bg-transparent border-transparent rounded-full hover:bg-white hover:border-primary text-black",
               isActiveCategoryHidden &&
